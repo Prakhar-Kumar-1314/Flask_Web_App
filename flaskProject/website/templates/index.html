@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            text-align: center;
+            margin: 50px;
+        }
+
+        h1 {
+            color: #333;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 200px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .error {
+            color: #d9534f;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Converter App</h1>
+
+<form method="post" action="{{ url_for('convert_temperature') }}">
+    <label for="temperature">Enter temperature:</label>
+    <input type="text" name="temperature" required>
+    <select name="from_unit">
+        <option value="Celsius">Celsius</option>
+        <option value="Fahrenheit">Fahrenheit</option>
+        <option value="Kelvin">Kelvin</option>
+    </select>
+    <button type="submit">Convert Temperature</button>
+</form>
+
+<form method="post" action="{{ url_for('convert_currency') }}">
+    <label for="amount">Enter amount:</label>
+    <input type="text" name="amount" required>
+    <select name="from_currency">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="JPY">JPY</option>
+        <option value="CAD">CAD</option>
+        <option value="AUD">AUD</option>
+        <option value="INR">INR</option>
+    </select>
+    <select name="to_currency">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="JPY">JPY</option>
+        <option value="CAD">CAD</option>
+        <option value="AUD">AUD</option>
+        <option value="INR">INR</option>
+    </select>
+    <button type="submit">Convert Currency</button>
+</form>
+
+<form method="post" action="{{ url_for('convert_length_route') }}">
+    <label for="value">Enter value:</label>
+    <input type="text" name="value" required>
+    <select name="from_unit">
+        <option value="Centimeter">Centimeter</option>
+        <option value="Meter">Meter</option>
+        <option value="Inch">Inch</option>
+    </select>
+    <select name="to_unit">
+        <option value="Centimeter">Centimeter</option>
+        <option value="Meter">Meter</option>
+        <option value="Inch">Inch</option>
+    </select>
+    <button type="submit">Convert Length</button>
+</form>
+
+<div class="result">
+    {% if converted %}
+        <h2>Temperature Conversion Result:</h2>
+        <p>Celsius: {{ converted.celsius }}</p>
+        <p>Fahrenheit: {{ converted.fahrenheit }}</p>
+        <p>Kelvin: {{ converted.kelvin }}</p>
+    {% endif %}
+
+    {% if conversion_result %}
+        <h2>Currency Conversion Result:</h2>
+        <p>{{ conversion_result.amount }} {{ conversion_result.from_currency }}
+            = {{ conversion_result.converted_amount }} {{ conversion_result.to_currency }}</p>
+    {% endif %}
+
+    {% if length_result %}
+        <h2>Length Conversion Result:</h2>
+        <p>{{ length_result.value }} {{ length_result.from_unit }}
+            = {{ length_result.converted_value }} {{ length_result.to_unit }}</p>
+    {% endif %}
+</div>
+
+{% if error_message %}
+    <div class="error">
+        {{ error_message }}
+    </div>
+{% endif %}
+</body>
+</html>
